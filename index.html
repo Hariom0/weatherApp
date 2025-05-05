@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creative Quiz App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.3.4/tsparticles.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      .loader {
+        width: 100px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: 8px solid;
+        border-color: #ffffff #ffffff00;
+        animation: l1 1s infinite;
+      }
+      @keyframes l1 {
+        to {
+          transform: rotate(0.5turn);
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 text-gray-800">
+    <div id="tsparticles" class="fixed top-0 left-0 w-full h-full -z-10"></div>
+    <div class="min-h-screen flex items-center justify-center relative mx-5">
+      <!-- Loader -->
+      <div
+        class="absolute inset-0 w-full h-full flex justify-center items-center bg-tranparent z-50 hidden"
+        id="loader"
+      >
+        <div class="loader"></div>
+      </div>
+
+      <!-- Main Screen -->
+      <div
+        id="main-screen"
+        class="w-full max-w-2xl p-6 bg-white shadow-xl rounded-xl relative z-10"
+      >
+        <!-- Start Screen -->
+        <div id="start-screen">
+          <h2 class="text-2xl font-bold mb-4 text-center">
+            Welcome to Quiz World
+          </h2>
+          <form id="quiz-form" class="space-y-4">
+            <div>
+              <label for="num-questions" class="block mb-1"
+                >Number of Questions</label
+              >
+              <input
+                type="number"
+                id="num-questions"
+                class="w-full border px-3 py-2 rounded-md"
+                min="1"
+                max="50"
+                value="5"
+                required
+              />
+            </div>
+            <div>
+              <label for="category" class="block mb-1">Category</label>
+              <select id="category" class="w-full border px-3 py-2 rounded-md">
+                <option value="General Knowledge">General Knowledge</option>
+                <option value="Film">Film</option>
+                <option value="Music">Music</option>
+                <option value="Video Games">Video Games</option>
+                <option value="Board Games">Board Games</option>
+                <option value="Science & Nature">Science & Nature</option>
+                <option value="Computers">Computers</option>
+                <option value="Maths">Maths</option>
+                <option value="Sports">Sports</option>
+                <option value="Geography">Geography</option>
+                <option value="History">History</option>
+                <option value="Celebrities">Celebrities</option>
+                <option value="Animals">Animals</option>
+              </select>
+            </div>
+            <div>
+              <label for="difficulty" class="block mb-1">Difficulty</label>
+              <select
+                id="difficulty"
+                class="w-full border px-3 py-2 rounded-md"
+              >
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              class="bg-black text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg"
+            >
+              Start Quiz
+            </button>
+          </form>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden text-center">
+          <h2 id="question" class="text-lg font-semibold mb-4"></h2>
+          <div class="grid gap-2 mb-4" id="options"></div>
+          <p id="warning" class="text-sm text-red-500 hidden mb-2">
+            Please select an answer.
+          </p>
+          <button
+            id="next-btn"
+            class="bg-black text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg"
+          >
+            Next
+          </button>
+        </div>
+
+        <!-- End Screen -->
+        <div id="end-screen" class="hidden text-center">
+          <h2 class="text-2xl font-bold mb-2">Congratulations!</h2>
+          <p class="mb-2">You completed the quiz!</p>
+          <p class="mb-4 font-semibold" id="score"></p>
+          <button
+            id="review-btn"
+            class="bg-emerald-600 text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg mt-2"
+          >
+            Review Answers
+          </button>
+          <button
+            id="restart-btn"
+            class="bg-sky-700 text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg mt-2"
+          >
+            Restart
+          </button>
+        </div>
+
+        <!-- Review Screen -->
+        <div id="review-screen" class="hidden text-center">
+          <h2 class="text-xl font-bold mb-4">Review Answers</h2>
+          <div id="review-list" class="space-y-4 text-left"></div>
+          <button
+            id="restart-btn2"
+            class="bg-black text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg mt-4"
+          >
+            Restart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer className="mt-6 flex text-center flex items-center ">
+      <p class="text-white text-center">
+        <span>&copy; 2025 Created by  <a
+            href="https://www.linkedin.com/in/hariom-singh-9651a4214"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cursor-pointer text-black "
+          > Hariom Singh</a> </span>
+    </p>
+
+      </div>
+    </footer>
+    <script>
+        tsParticles.load("tsparticles", {
+          background: { color: { value: "#0f172a" } },
+          particles: {
+            number: { value: 80 },
+            size: { value: 2 },
+            move: { enable: true, speed: 1 },
+            opacity: { value: 0.5 },
+          },
+        });
+      </script>
+      <script src="script.js"></script>
+  </body>
+</html>
