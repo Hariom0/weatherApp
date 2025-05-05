@@ -3,172 +3,138 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Creative Quiz App</title>
+    <title>Weather App</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.3.4/tsparticles.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
     <style>
-      .loader {
-        width: 100px;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        border: 8px solid;
-        border-color: #ffffff #ffffff00;
-        animation: l1 1s infinite;
-      }
-      @keyframes l1 {
-        to {
-          transform: rotate(0.5turn);
-        }
+      html, body {
+        height: 100%;
       }
     </style>
   </head>
+  <body class="flex flex-col min-h-screen bg-blue-200 relative">
+    <!-- Vanta Background -->
+    <div id="vanta-bg" class="absolute top-0 left-0 w-full h-full -z-10"></div>
 
-  <body class="bg-gray-100 text-gray-800">
-    <div id="tsparticles" class="fixed top-0 left-0 w-full h-full -z-10"></div>
-    <div class="min-h-screen flex items-center justify-center relative mx-5">
-      <!-- Loader -->
-      <div
-        class="absolute inset-0 w-full h-full flex justify-center items-center bg-tranparent z-50 hidden"
-        id="loader"
-      >
-        <div class="loader"></div>
-      </div>
-
-      <!-- Main Screen -->
-      <div
-        id="main-screen"
-        class="w-full max-w-2xl p-6 bg-white shadow-xl rounded-xl relative z-10"
-      >
-        <!-- Start Screen -->
-        <div id="start-screen">
-          <h2 class="text-2xl font-bold mb-4 text-center">
-            Welcome to Quiz World
-          </h2>
-          <form id="quiz-form" class="space-y-4">
-            <div>
-              <label for="num-questions" class="block mb-1"
-                >Number of Questions</label
-              >
-              <input
-                type="number"
-                id="num-questions"
-                class="w-full border px-3 py-2 rounded-md"
-                min="1"
-                max="50"
-                value="5"
-                required
-              />
-            </div>
-            <div>
-              <label for="category" class="block mb-1">Category</label>
-              <select id="category" class="w-full border px-3 py-2 rounded-md">
-                <option value="General Knowledge">General Knowledge</option>
-                <option value="Film">Film</option>
-                <option value="Music">Music</option>
-                <option value="Video Games">Video Games</option>
-                <option value="Board Games">Board Games</option>
-                <option value="Science & Nature">Science & Nature</option>
-                <option value="Computers">Computers</option>
-                <option value="Maths">Maths</option>
-                <option value="Sports">Sports</option>
-                <option value="Geography">Geography</option>
-                <option value="History">History</option>
-                <option value="Celebrities">Celebrities</option>
-                <option value="Animals">Animals</option>
-              </select>
-            </div>
-            <div>
-              <label for="difficulty" class="block mb-1">Difficulty</label>
-              <select
-                id="difficulty"
-                class="w-full border px-3 py-2 rounded-md"
-              >
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
-            </div>
-            <button
-              type="submit"
-              class="bg-black text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg"
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col justify-center items-center z-10 px-4">
+      <h1 class="text-4xl md:text-4xl font-bold text-gray-800 mb-2 text-center">
+        Real-Time Weather at Your Fingertips...
+      </h1>
+      <p class="mb-10 text-md text-gray-600 text-center max-w-md">
+        Enter any city to instantly view current temperature, conditions, humidity, and more.
+      </p>
+      <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-xl mx-auto">
+        <h1 class="text-2xl font-bold mb-4 text-center">Weather App</h1>
+        <div class="flex mb-4">
+          <input
+            type="text"
+            id="location-input"
+            placeholder="Enter location"
+            class="w-full p-2 border border-gray-300 rounded-md"
+          />
+          <button
+            class="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md h-10 px-4 py-2 bg-black text-white font-semibold mx-3"
+            id="get-weather-btn"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="w-4 h-4 mr-2"
             >
-              Start Quiz
-            </button>
-          </form>
-        </div>
-
-        <!-- Quiz Screen -->
-        <div id="quiz-screen" class="hidden text-center">
-          <h2 id="question" class="text-lg font-semibold mb-4"></h2>
-          <div class="grid gap-2 mb-4" id="options"></div>
-          <p id="warning" class="text-sm text-red-500 hidden mb-2">
-            Please select an answer.
-          </p>
-          <button
-            id="next-btn"
-            class="bg-black text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg"
-          >
-            Next
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            Search
           </button>
         </div>
 
-        <!-- End Screen -->
-        <div id="end-screen" class="hidden text-center">
-          <h2 class="text-2xl font-bold mb-2">Congratulations!</h2>
-          <p class="mb-2">You completed the quiz!</p>
-          <p class="mb-4 font-semibold" id="score"></p>
-          <button
-            id="review-btn"
-            class="bg-emerald-600 text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg mt-2"
-          >
-            Review Answers
-          </button>
-          <button
-            id="restart-btn"
-            class="bg-sky-700 text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg mt-2"
-          >
-            Restart
-          </button>
+        <!-- Weather Info -->
+        <div id="weather-report" class="mt-6 bg-gray-100 p-5 rounded-lg hidden">
+          <h2 class="text-2xl font-semibold mb-4 text-center" id="city-name">
+            Weather Info
+          </h2>
+          <div class="grid grid-cols-2 gap-6">
+            <!-- Temperature -->
+            <div class="flex items-center bg-white p-4 rounded-lg shadow">
+              <!-- SVG + Data -->
+              <svg class="w-8 h-8 mr-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z" />
+              </svg>
+              <div>
+                <p class="text-sm text-gray-500">Temperature</p>
+                <p class="text-xl font-semibold" id="temperature">--</p>
+              </div>
+            </div>
+
+            <!-- Condition -->
+            <div class="flex items-center bg-white p-4 rounded-lg shadow">
+              <svg class="w-8 h-8 mr-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+              </svg>
+              <div>
+                <p class="text-sm text-gray-500">Condition</p>
+                <p class="text-xl font-semibold" id="condition">--</p>
+              </div>
+            </div>
+
+            <!-- Humidity -->
+            <div class="flex items-center bg-white p-4 rounded-lg shadow">
+              <svg class="w-8 h-8 mr-3 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/>
+                <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>
+              </svg>
+              <div>
+                <p class="text-sm text-gray-500">Humidity</p>
+                <p class="text-xl font-semibold" id="humidity">--</p>
+              </div>
+            </div>
+
+            <!-- Wind Speed -->
+            <div class="flex items-center bg-white p-4 rounded-lg shadow">
+              <svg class="w-8 h-8 mr-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" />
+                <path d="M9.6 4.6A2 2 0 1 1 11 8H2" />
+                <path d="M12.6 19.4A2 2 0 1 0 14 16H2" />
+              </svg>
+              <div>
+                <p class="text-sm text-gray-500">Wind Speed</p>
+                <p class="text-xl font-semibold" id="wind-speed">--</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Review Screen -->
-        <div id="review-screen" class="hidden text-center">
-          <h2 class="text-xl font-bold mb-4">Review Answers</h2>
-          <div id="review-list" class="space-y-4 text-left"></div>
-          <button
-            id="restart-btn2"
-            class="bg-black text-white px-4 py-2 rounded-xl flex items-center justify-between gap-2 hover:bg-gray-800 transition-colors shadow-sm w-fit mx-auto font-semibold text-lg mt-4"
-          >
-            Restart
-          </button>
-        </div>
+        <!-- Error Message -->
+        <p id="error-message" class="text-red-600 mt-4 hidden text-center">
+          City not found. Please try again.
+        </p>
       </div>
-    </div>
+    </main>
 
-    <footer className="mt-6 flex text-center flex items-center ">
-      <p class="text-white text-center">
-        <span>&copy; 2025 Created by  <a
-            href="https://www.linkedin.com/in/hariom-singh-9651a4214"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cursor-pointer text-black "
-          > Hariom Singh</a> </span>
-    </p>
-
-      </div>
+    <!-- Footer -->
+    <footer class="text-center py-4 bg-white bg-opacity-0 z-10">
+      <p class="text-gray-700">
+        &copy; 2025 Created by
+        <a
+          href="https://www.linkedin.com/in/hariom-singh-9651a4214"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-blue-600 hover:underline"
+        >
+          Hariom Singh
+        </a>
+      </p>
     </footer>
-    <script>
-        tsParticles.load("tsparticles", {
-          background: { color: { value: "#0f172a" } },
-          particles: {
-            number: { value: 80 },
-            size: { value: 2 },
-            move: { enable: true, speed: 1 },
-            opacity: { value: 0.5 },
-          },
-        });
-      </script>
-      <script src="script.js"></script>
+
+    <script src="script.js"></script>
   </body>
 </html>
