@@ -5,7 +5,7 @@ A modern, responsive weather app built using **HTML**, **Tailwind CSS**, and **J
 ---
 ## 📸 Preview
 
-![App Demo](https://hariom0.github.io/weatherApp)
+[App Demo](https://hariom0.github.io/weatherApp)
 
 ---
 
