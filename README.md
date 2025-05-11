@@ -25,7 +25,7 @@ A modern, responsive weather app built using **HTML**, **Tailwind CSS**, and **J
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [Vanta.js (Birds)](https://www.vantajs.com/)
 - [Three.js](https://threejs.org/)
-- [OpenWeatherMap API](https://openweathermap.org/api) *(if applicable)*
+
 
 ---
 
